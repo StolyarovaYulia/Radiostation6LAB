@@ -1,0 +1,84 @@
+﻿@model List<Radiostation.DAL.Entities.Employee>
+
+@{ ViewData["Title"] = "Отдел кадров"; }
+
+<div class="container-xl">
+    <div class="table-wrapper">
+        <div class="table-title mb-2 mt-2">
+            <div class="row">
+                <div class="col-sm-6 row ml-1">
+                    <input placeholder="Поиск по фамилии" id="lastNameSearchInput" class="col-3 form-control mr-1">
+                    <input placeholder="Поиск по имени" id="firstNameSearchInput" class="col-3 form-control mr-1">
+                    <input placeholder="Поиск по образованию" id="educationSearchInput" class="col-4 form-control mr-1">
+                    <a class="btn btn-outline-info col-2" id="searchBtn">
+                        <span>Поиск</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Фамилия
+                </th>
+                <th>
+                    Имя
+                </th>
+                <th>
+                    Образование
+                </th>
+                <th>
+                    Количество эфиров
+                </th>
+                <th>
+                    Должность
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Education)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Translations.Count)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Role)
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script>
+        $("#searchBtn").click(function ()
+        {
+            const educationSearchString = $("#educationSearchInput").prop('value');
+            const firstNameSearchString = $("#firstNameSearchInput").prop('value');
+            const lastNameSearchString = $("#lastNameSearchInput").prop('value');
+            const url = "/Staff/Index?lastName=" + lastNameSearchString + "&firstName=" + firstNameSearchString + "&education=" + educationSearchString;
+            window.location.replace("https://localhost:44378" + url);
+        })
+    </script>
+}

@@ -1,0 +1,148 @@
+﻿@using Radiostation.WebUI.Extensions
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Главная";
+}
+
+<div class="row container-xl ml-2 mr-2">
+    <div class="col" style="border-right: solid black 1px;">
+        <div class="row">
+            <a href="#" class="col-1" style="font-size: xxx-large;" onclick="handleArrowClick(-1)">←</a>
+            <h1 class="text-center col">
+                @if (Model.YesterdayDate.IsEqualDay(DateTime.Now))
+                {
+                    <p>Сегодня</p>
+                }
+                else if (Model.YesterdayDate.IsEqualDay(DateTime.Now.AddDays(-1)))
+                {
+                    <p>Вчера</p>
+                }
+                else if (Model.YesterdayDate.IsEqualDay(DateTime.Now.AddDays(1)))
+                {
+                    <p>Завтра</p>
+                }
+                else
+                {
+                    @Model.YesterdayDate.Date.ToString("d")
+                }
+            </h1>
+        </div>
+        @if (Model.Yesterday.Count == 0)
+        {
+            <h4 class="text-center">Ничего нет!</h4>
+        }
+        else
+        {
+            <div class="list-group">
+                @foreach (var translation in Model.Yesterday.OrderBy(t => t.Date))
+                {
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">@translation.Track.Name</h5>
+                            <small class="text-muted">@translation.Track.Genre.Name</small>
+                        </div>
+                        <p class="mb-1">Ведущий: @translation.Employee.LastName @translation.Employee.FirstName</p>
+                        <small class="text-muted">@translation.Date.ToString("g")</small>
+                    </a>
+                }
+            </div>
+        }
+    </div>
+    <div class="col" style="border-right: solid black 1px; border-left: solid black 1px;">
+        <h1 class="text-center">
+            @if (Model.TodayDate.IsEqualDay(DateTime.Now))
+            {
+                <p>Сегодня</p>
+            }
+            else if (Model.TodayDate.IsEqualDay(DateTime.Now.AddDays(-1)))
+            {
+                <p>Вчера</p>
+            }
+            else if (Model.TodayDate.IsEqualDay(DateTime.Now.AddDays(1)))
+            {
+                <p>Завтра</p>
+            }
+            else
+            {
+                @Model.TodayDate.Date.ToString("d")
+            }
+        </h1>
+        @if (Model.Today.Count == 0)
+        {
+            <h4 class="text-center">Ничего нет!</h4>
+        }
+        else
+        {
+            <div class="list-group">
+                @foreach (var translation in Model.Today.OrderBy(t => t.Date))
+                {
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">@translation.Track.Name</h5>
+                            <small class="text-muted">@translation.Track.Genre.Name</small>
+                        </div>
+                        <p class="mb-1">Ведущий: @translation.Employee.LastName @translation.Employee.FirstName</p>
+                        <small class="text-muted">@translation.Date.ToString("g")</small>
+                    </a>
+                }
+            </div>
+        }
+    </div>
+    <div class="col" style="border-left: solid black 1px;">
+        <div class="row">
+            <h1 class="text-center col">
+                @if (Model.TomorrowDate.IsEqualDay(DateTime.Now))
+                {
+                    <p>Сегодня</p>
+                }
+                else if (Model.TomorrowDate.IsEqualDay(DateTime.Now.AddDays(-1)))
+                {
+                    <p>Вчера</p>
+                }
+                else if (Model.TomorrowDate.IsEqualDay(DateTime.Now.AddDays(1)))
+                {
+                    <p>Завтра</p>
+                }
+                else
+                {
+                    @Model.TomorrowDate.Date.ToString("d")
+                }
+            </h1>
+            <a href="#" class="col-1" style="font-size: xxx-large;" onclick="handleArrowClick(1)">→</a>
+        </div>
+        @if (Model.Tomorrow.Count == 0)
+        {
+            <h4 class="text-center">Ничего нет!</h4>
+        }
+        else
+        {
+            <div class="list-group">
+                @foreach (var translation in Model.Tomorrow.OrderBy(t => t.Date))
+                {
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">@translation.Track.Name</h5>
+                            <small class="text-muted">@translation.Track.Genre.Name</small>
+                        </div>
+                        <p class="mb-1">Ведущий: @translation.Employee.LastName @translation.Employee.FirstName</p>
+                        <small class="text-muted">@translation.Date.ToString("g")</small>
+                    </a>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function handleArrowClick(value) {
+            const query = window.location.href.split("?")
+            let currentOffset = value;
+            if (query.length !== 1) {
+                const queryOffset = query[1].replace(/offset=/, "");
+                currentOffset += Number(queryOffset);
+            }
+            window.location.replace("https://localhost:44378/?offset=" + currentOffset);
+        }
+    </script>
+}

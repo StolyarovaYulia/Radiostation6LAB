@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Radiostation.WebUI</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 px-1 bg-dark position-fixed" style="height: 100%" id="sticky-sidebar">
+                <a class="nav-link text-light text-decoration-none text-lg" asp-area="" asp-controller="Home" asp-action="Index">🏠 Главная</a>
+                <a class="nav-link text-light text-decoration-none text-lg" asp-area="" asp-controller="Employee" asp-action="Index">🧑 Работники</a>
+                <a class="nav-link text-light text-decoration-none text-lg" asp-area="" asp-controller="Genre" asp-action="Index">🎵 Жанры</a>
+                <a class="nav-link text-light text-decoration-none text-lg" asp-area="" asp-controller="Performer" asp-action="Index">🎤 Исполнители</a>
+                <a class="nav-link text-light text-decoration-none text-lg" asp-area="" asp-controller="Track" asp-action="Index">💿 Записи</a>
+                <a class="nav-link text-light text-decoration-none text-lg" asp-area="" asp-controller="Translation" asp-action="Index">📡 Трансляции</a>
+                <a class="nav-link text-light text-decoration-none text-lg" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    ⚙ Ещё
+                </a>
+                <div class="collapse ml-2" id="collapseExample">
+                    <a class="nav-link text-light text-decoration-none text-lg" asp-area="" asp-controller="Staff" asp-action="Index">- Отдел кадров</a>
+                    <a class="nav-link text-light text-decoration-none text-lg" asp-area="" asp-controller="TrackArchive" asp-action="Index">- Музыкальный архив</a>
+                    <a class="nav-link text-light text-decoration-none text-lg" asp-area="" asp-controller="BroadGrid" asp-action="Index">- Сетка вещания</a>
+                </div>
+            </div>
+            <div class="col offset-2" id="main">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

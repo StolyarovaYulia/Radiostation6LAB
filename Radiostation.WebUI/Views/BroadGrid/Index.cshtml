@@ -1,0 +1,20 @@
+﻿<div class="row mt-lg-5">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Данные о рабочем времени</h5>
+                <a asp-action="AllEmployees" class="btn btn-primary">Все сотрудники (текущая неделя)</a>
+                <a asp-action="Employee" class="btn btn-primary">Определенный сотрудник (всё время)</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Данные о трансляциях</h5>
+                <a asp-action="TrackTime" class="btn btn-primary">Найти время композиции</a>
+                <a asp-action="TrackNoTime" class="btn btn-primary">Найти композицию которая не транслировалась в промежутке</a>
+            </div>
+        </div>
+    </div>
+</div>

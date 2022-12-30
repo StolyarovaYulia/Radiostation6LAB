@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Radiostation</title>
+    <link rel="stylesheet" href="wwwroot/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="wwwroot/css/site.css" />
+</head>
+<body style="width: 100%; height: 100%; padding: 0 0 0 0; margin: 0 0 0 0;">
+<div>
+    <div class="modal" id="addUnitRoleModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title-text">Добавление</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeAddUnitRoleModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <form class="row g-3 needs-validation" action="javascript:void(0);">
+                            <div class="col-md-4" id="addUnitRoleModalContent">
+                                <input hidden="hidden" id="id-item">
+                                <label for="name-modal-item" class="form-label">Наименование</label>
+                                <input class="form-control" id="name-modal-item"/>
+                                <label for="duration-modal-item" class="form-label">Описание</label>
+                                <input class="form-control" id="duration-modal-item"/>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <button class="btn btn-success" type="submit" onclick="createUnitRoleBtnHandler()">Добавить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div>
+            <div class="row">
+                <a class="btn btn-outline-secondary mt-3 col-3 mr-1" href="track.html">Записи</a>
+                <a class="btn btn-outline-secondary mt-3 col-3" href="performer.html">Исполнители</a>
+            </div>
+            <a class="btn btn-outline-secondary mt-3" onclick="openCreateModal()">Создать</a>
+            <table class="table table-striped mt-3">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Наименование</th>
+                    <th>Описание</th>
+                </tr>
+                </thead>
+                <tbody id="track-table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+<script src="wwwroot/lib/jquery/dist/jquery.min.js"></script>
+<script src="wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="wwwroot/js/site.js"></script>
+<script>
+    function createUnitRoleBtnHandler() {
+        const idVal = $("#id-item").val();
+        const nameVal = $("#name-modal-item").val();
+        const descriptionVal = $("#duration-modal-item").val();
+
+        if ($("#modal-title-text")[0].innerHTML === 'Изменение') {
+            $.ajax({
+                type: 'PUT',
+                url: 'http://localhost:5199/Genre',
+                data: '{"Id": ' + idVal + ', "Name": "' + nameVal + '", "Description": "' + descriptionVal + '"}',
+                success: function() {
+                    closeAddUnitRoleModal();
+                    updateTable();
+                },
+                contentType: "application/json",
+                dataType: 'json'
+            })
+            return
+        }
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:5199/Genre',
+            data: '{"Name": "' + nameVal + '", "Description": "' + descriptionVal + '"}',
+            success: function() {
+                closeAddUnitRoleModal();
+                updateTable();
+            },
+            contentType: "application/json",
+            dataType: 'json'
+        })
+    }
+
+    function openCreateModal() {
+        $("#modal-title-text")[0].innerHTML = 'Добавление'
+        $('#addUnitRoleModal').show()
+    }
+
+    function closeAddUnitRoleModal() {
+        $('#addUnitRoleModal').hide()
+    }
+
+    function onDelete(id) {
+        $.ajax({
+            type: 'DELETE',
+            url: "http://localhost:5199/Genre?id=" + id,
+            success: function () {
+                updateTable();
+            }
+        })
+    }
+
+    function updateTable() {
+        $.get("http://localhost:5199/Genre", function (data) {
+            const trackTableBody = $("#track-table-body");
+            trackTableBody.empty()
+            for (let i = 0; i < data.length; i++) {
+                trackTableBody.append(
+                    `<tr>
+                    <td>${data[i].id}</td>
+                    <td>${data[i].name}</td>
+                    <td>${data[i].description}</td>
+                    <td>
+                    <a onclick="onDelete(${data[i].id})" class="btn btn-outline-secondary">Удалить</a>
+                    <a onclick="onEdit(${data[i].id}, '${data[i].name}', '${data[i].description}')" class="btn btn-outline-secondary">Изменить</a>
+                    </td>
+                    </tr>`)
+            }
+        })
+    }
+
+    function onEdit(id, name, description) {
+        fillModalWithData(id, name, description);
+    }
+
+    function fillModalWithData(id, name, description) {
+        openCreateModal();
+        $("#modal-title-text")[0].innerHTML = 'Изменение'
+        $("#id-item").val(id);
+
+        $("#duration-modal-item").val(description);
+        $("#name-modal-item").val(name);
+    }
+
+    $(document).ready(function () {
+        updateTable();
+    })
+</script>
+</html>

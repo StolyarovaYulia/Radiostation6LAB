@@ -1,0 +1,33 @@
+﻿@model List<string>
+
+<form asp-action="TrackNoTime" method="post">
+    <div class="row mr-5 ml-5 mt-1">
+        <input name="start" required="required" type="date" class="form-control col-3">
+        <input name="end" required="required" type="date" class="form-control col-3">
+        <button class="btn btn-info col-2" type="submit">Найти</button>
+    </div>
+</form>
+
+
+@if (Model == null)
+{
+    <h1 class="text-center mt-1 mb-1">Выберите время</h1>
+}
+else if (Model is { Count: 0 })
+{
+    <h1 class="text-center mt-1 mb-1">Ничего не найдено</h1>
+}
+else
+{
+    <h1 class="text-center mt-1 mb-1">Найдено @Model.Count треков</h1>
+}
+
+@if (Model != null || Model?.Count > 0)
+{
+    <ul class="list-group">
+        @foreach (var item in Model)
+        {
+            <li class="list-group-item">@item</li>
+        }
+    </ul>
+}
